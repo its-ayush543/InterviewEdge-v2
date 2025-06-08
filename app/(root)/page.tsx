@@ -1,33 +1,19 @@
 import InterviewCard from "@/components/InterviewCard";
 import { Button } from "@/components/ui/button";
-import { getCurrentUser, getInterviewByUserId, getLatestInterviews } from "@/lib/actions/auth.action";
+import { getCurrentUser, getInterviewsByUserId, getLatestInterviews } from "@/lib/actions/auth.action";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Page = async () => {
   const user = await getCurrentUser();
-
-  // ✅ Safely handle unauthenticated users
-  if (!user?.id) {
-    return (
-      <section className="text-center mt-10">
-        <h2 className="text-xl font-bold">Please sign in to view your interviews.</h2>
-        <Button asChild className="mt-4">
-          <Link href="/sign-in">Go to Sign In</Link>
-        </Button>
-      </section>
-    );
-  }
-
-  // ✅ Fetch both user and latest interviews safely
-  const [userInterviews, latestInterviews] = await Promise.all([
-    getInterviewByUserId(user.id),
-    getLatestInterviews({ userId: user.id })
+  const [userInterviews, allInterviews] = await Promise.all([
+    getInterviewsByUserId(user?.id!),
+    getLatestInterviews({ userId: user?.id! }),
   ]);
 
-  const hasPastInterviews = userInterviews?.length > 0;
-  const hasUpComingInterviews = latestInterviews?.length > 0;
+  const hasPastInterviews = userInterviews?.length! > 0;
+  const hasUpComingInterviews = allInterviews?.length! > 0;
 
   return (
     <>
@@ -58,7 +44,7 @@ const Page = async () => {
             userInterviews?.map((interview) => (
               <InterviewCard
                 key={interview.id}
-                userId={user.id}
+                userId={user?.id}
                 interviewId={interview.id}
                 role={interview.role}
                 type={interview.type}
@@ -76,10 +62,10 @@ const Page = async () => {
         <h2>Take an Interview</h2>
         <div className="interviews-section">
           {hasUpComingInterviews ? (
-            latestInterviews?.map((interview) => (
+            allInterviews?.map((interview) => (
               <InterviewCard
                 key={interview.id}
-                userId={user.id}
+                userId={user?.id}
                 interviewId={interview.id}
                 role={interview.role}
                 type={interview.type}
