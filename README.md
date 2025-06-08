@@ -40,12 +40,17 @@
 
 ---
 
-## 🧪 Running the App
+## 🌐 Live Demo
 
-### Install dependencies
+[![Live on Vercel](https://img.shields.io/badge/Live-Demo-00C7B7?style=for-the-badge&logo=vercel&logoColor=white)](https://interview-edge-v2.vercel.app/sign-in)
 
-```bash
-npm install
-# or
-yarn install
+🚀 Experience the app live:  
+👉 [interview-edge-v2.vercel.app](https://interview-edge-v2.vercel.app/sign-in)
+
+
+
+> Access the latest version of InterviewEdge v2 — hosted on Vercel.
+
+
+
 
